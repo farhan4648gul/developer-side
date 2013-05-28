@@ -5,7 +5,7 @@ use Laravel\Config;
 *  Class : Sneakpeak
 *  Function : System Server Status Class
 *  Author :  joharijumali
-*  Description: Class to read status of current host
+*  Description: Class to read hdd, cpu, memory, loads info of current host
 **********************************************************************/
 
 class Sneakpeak{
@@ -60,6 +60,7 @@ class Sneakpeak{
 	}
 
 	public static function onRequestStart() {
+		/* initiate cpu request */
 		$dat = getrusage();
 		define('PHP_TUSAGE', microtime(true));
 		define('PHP_RUSAGE', $dat["ru_utime.tv_sec"]*1e6+$dat["ru_utime.tv_usec"]);
@@ -70,7 +71,7 @@ class Sneakpeak{
 	    $dat["ru_utime.tv_usec"] = ($dat["ru_utime.tv_sec"]*1e6 + $dat["ru_utime.tv_usec"]) - PHP_RUSAGE;
 	    $time = (microtime(true) - PHP_TUSAGE) * 1000000;
 	 
-	    // cpu per request
+	    /* calculate cpu per request */
 	    if($time > 0) {
 	        $cpu = sprintf("%01.2f", ($dat["ru_utime.tv_usec"] / $time) * 100);
 	    } else {
@@ -121,7 +122,7 @@ class Sneakpeak{
 	public static function get_serverinfo(){
 
 		ob_start () ;
-		phpinfo (INFO_MODULES) ;
+		phpinfo () ;
 		$pinfo = ob_get_contents () ;
 		ob_end_clean () ;
 
@@ -148,7 +149,7 @@ class Sneakpeak{
 		 }
 
 
-		return self::serverload();
+		return $vModules;
 	}
 
 	public static function serverload(){
@@ -160,8 +161,6 @@ class Sneakpeak{
 		$data['time'] = $uptime[0];
 		$uptime = explode(',', $uptime[1]);
 		$uptime = $uptime[0].', '.$uptime[1];
-		// $data = "Server Load Averages $load[0], $load[1], $load[2]\n";
-		// $data .= "Server Uptime $uptime";
 
 		$data['uptime'] = 
 		$data['uptime'] = $uptime;
