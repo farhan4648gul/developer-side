@@ -17,21 +17,25 @@
           	</div>
         </div>
 	</div>
-	<div class="form-actions span4">
-  		<h4>Server Information</h4>
+	<div class="form-actions span8">
 		<div class="row-fluid">
-          	<div class="span12">
-          		&nbsp;
+			<h4>Server Load</h4>
+			<div class="row-fluid">
+	          	<div class="span12">
+	      			<div id='server_loads'></div>
+	      			<div id='server_up'></div>
+	          	</div>
           	</div>
         </div>
-	</div>
-	<div class="form-actions span4">
-  		<h4>Server Information</h4>
 		<div class="row-fluid">
-          	<div class="span12">
-          		<div id='server_loads'></div>
-          	</div>
-        </div>
+	  		<h4>Memory Usage</h4>
+			<div class="row-fluid">
+	          	<div class="span12">
+	          		<div id='memory'></div>
+	          		<div id='memorytext'></div>
+	          	</div>
+	        </div>
+		</div>
 	</div>
 </div>
 <div class="row-fluid">
@@ -39,12 +43,9 @@
   		<h4>Hard Disk Usage</h4>
 		<div class="row-fluid">
           	<div class="span12">
-          		<div id='hdd'></div>
-          	</div>
-        </div>
-        <div class="row-fluid">
-        	<div class="span12">
-        		<center><strong>Used :</strong> {{ $du }} GB &nbsp; <strong>Free :</strong> {{ $df }} GB</center>
+          		<center>
+          			<div id='hdd'></div>
+          		</center>
           	</div>
         </div>
 	</div>
@@ -57,32 +58,25 @@
 	          	</center>
           	</div>
         </div>
-        <div class="row-fluid">
-          	<div class="span12">
-          		&nbsp;
-          	</div>
-        </div>
 	</div>
 	<div class="form-actions span4">
   		<h4>Memory Usage</h4>
 		<div class="row-fluid">
           	<div class="span12">
-          		<div id='memory'></div>
-          	</div>
-        </div>
-        <div class="row-fluid">
-          	<div class="span12">
-          		&nbsp;
+          		<center>
+          			<div id='memory'></div>
+          		</center>
           	</div>
         </div>
 	</div>
 </div>
 @endsection
+
 @section('scripts')
 <script type='text/javascript' src='https://www.google.com/jsapi'></script>
     <script type='text/javascript'>
 
-      google.load('visualization', '1', {packages:['gauge','corechart']});
+      google.load('visualization', '1', {packages:['corechart']});
       google.setOnLoadCallback(init);
 
     	function init() {
@@ -96,90 +90,155 @@
       			var limit = Math.ceil(data.memorylimit);
       			var server = data.server;
 
-      			drawCPU(cpu);
-      			drawHDD(freeHdd,usedHdd);
-      			drawMem(memory,limit);
       			drawServLoad(server);
+      			drawMems(memory,limit);
       		});
 
 	    }
 
-      	function drawCPU(cpu) {
+	    function summary(cpu,freeHdd,usedHdd,memory,limit,server){
 
-	        var data = google.visualization.arrayToDataTable([
-	          ['Label', 'Value'],
-	          ['CPU', cpu ]
-	        ]);
+	    	$('#server').html('');
+	   		$('#server').append('<br/><strong>CPU Usage :</strong> '+cpu+'%');
+	   		$('#server').append('<br/><strong>Harddisk Used :</strong> '+usedHdd+' GB &nbsp; <strong><br/>Harddisk Free :</strong> '+freeHdd+' GB');
+	   		$('#server').append('<br/><strong>Memory Allocated :</strong> '+limit+'MB &nbsp;<strong><br/>Memory Consumed :</strong> '+memory+'MB');
+	   		$('#server').append('<br/><strong>Server Uptime :</strong> '+server.uptime+' <strong>');
+	   		$('#server').append('<br/><strong>Server Loads :</strong> '+parseFloat(server.load.one).toFixed(2)+' | '+parseFloat(server.load.five).toFixed(2)+' | '+parseFloat(server.load.fifteen).toFixed(2)+' <strong>');
 
-	        var options = {
-	          width: 400, height: 200,
-	          redFrom: 80, redTo: 100,
-	          yellowFrom:75, yellowTo: 80,
-	          minorTicks: 5
-	        };
-
-	        var chart = new google.visualization.Gauge(document.getElementById('cpu'));
-	        chart.draw(data, options);
-      	}
-
-		function drawHDD(freeHdd,usedHdd) {
-		  // Create and populate the data table.
-		  var data = google.visualization.arrayToDataTable([
-		    ['HDD', 'Gigabytes'],
-		    ['Free', freeHdd],
-		    ['Used', usedHdd]
-		  ]);
-
-		var options = {
-		          chartArea: {left:20,top:30,width:"80%",height:"80%"},
-		          tooltip: {text:'both'}
-		        };
-
-		  // Create and draw the visualization.
-		  new google.visualization.PieChart(document.getElementById('hdd')).
-		      draw(data, options);
-		}
-
-		function drawMem(memory,limit) {
-	        var data = google.visualization.arrayToDataTable([
-	          ['Memory (MB)', 'Consumed',  'Available'],
-	          ['Memory (MB)',memory, (limit -memory)]
-	        ]);
-
-	        var options = {
-	          vAxis: {title: 'Memory Consumed'},
-	          chartArea: {left:20,top:20,width:"50%",height:"80%"},
-	          isStacked: true,
-	          series: [{color: 'red', visibleInLegend: true},{color: 'blue', visibleInLegend: true}]
-	        };
-
-	        var chart = new google.visualization.SteppedAreaChart(document.getElementById('memory'));
-	        chart.draw(data, options);
 	    }
+
 
 	    function drawServLoad(server) {
+	    	
+			var utc = currentTime();
 
-	        var data = google.visualization.arrayToDataTable([
+
+			var one = parseFloat(parseFloat(server.load.one).toFixed(2));
+			var five = parseFloat(parseFloat(server.load.five).toFixed(2));
+
+	        var data = new google.visualization.arrayToDataTable([
 	          ['Times', 'Loads'],
-	          [server.load.fifteen ,server.load.fifteen ],
-	          [server.load.five ,server.load.five ],
-	          [server.load.one ,server.load.one ]
+	          [utc.toString() , five ],
+	          [utc.toString() , one ]
 	        ]);
 
-	        var options = {
-	          title: 'Server Loads',
-	          chartArea: {width: '80%', height: '50%'},
-	          curveType: 'function',
-	          // hAxis: {gridlines:{count:3},viewWindowMode:'pretty'},
-	          // vAxis: {minValue:0,viewWindowMode:'pretty'},
-	          legend: {position:'bottom'}
-	        };
+			var options = {
+			      colors: ['red'],
+			      legend:{position:'bottom'},
+			      chartArea:{left:30,top:30,width:"90%",height:"75%"},
+			      animation:{
+			        duration: 1000,
+			        easing: 'out',
+			      },
+			      vAxis: {minValue:0, maxValue:2},
+			      hAxis: {gridlines:{count:0},logScale:true,textPosition:'none'},
 
-	        var chart = new google.visualization.LineChart(document.getElementById('server_loads'));
+			    };
+
+	        var chart = new google.visualization.AreaChart(document.getElementById('server_loads'));
 	        chart.draw(data, options);
-	        $('#server_loads').append('<br/><center><strong>Server Uptime :</strong> '+server.uptime+' <strong></center>');
+	        $('#server_up').html('');
+	        $('#server_up').append('<br/><strong>Server Uptime :</strong> '+server.uptime+' <strong>');
+	        $('#server_up').append('<br/><strong>Server Loads :</strong> '+parseFloat(server.load.one).toFixed(2)+' | '+parseFloat(server.load.five).toFixed(2)+' | '+parseFloat(server.load.fifteen).toFixed(2)+' <strong>');
+	        setInterval(function(){ redrawSerLoad(server,chart,data,options); },5000);
 	    }
 
-        var int=self.setInterval(function(){init();},5000);
+		function redrawSerLoad(server,chart,data,options){
+
+			var chartData = data;
+			var row = chartData.getNumberOfRows();
+			var newrow = row;
+
+			if (row > 100) {
+				newrow = row - 1;
+	      		chartData.removeRow(Math.floor(0));
+			};
+
+	      	var rawData = jQuery.getJSON("{{ url('admin/home/server');}}",function(data) {
+
+	      		var loadtime = currentTime();
+	      		var one = parseFloat(parseFloat(data.server.load.one).toFixed(2));
+	      		$('#server_up').html('');
+
+	      		chartData.insertRows(newrow, [[loadtime.toString(),one]]);
+	      		chart.draw(chartData, options);
+	      		$('#server_up').append('<br/><strong>Server Uptime :</strong> '+data.server.uptime+' <strong> ');
+	      		$('#server_up').append('<br/><strong>Server Loads :</strong> '+parseFloat(data.server.load.one).toFixed(2)+' | '+parseFloat(data.server.load.five).toFixed(2)+' | '+parseFloat(data.server.load.fifteen).toFixed(2)+' <strong>');
+
+	      	});
+
+		}
+
+
+	    function drawMems(memory,limit) {
+	    	
+			var utc = currentTime();
+
+	        var data = new google.visualization.arrayToDataTable([
+	          ['Times', 'Usage','Limit'],
+	          [utc.toString() , memory , limit ]
+	        ]);
+
+			var options = {
+			      colors: ['red','blue'],
+			      legend:{position:'bottom'},
+			      chartArea:{left:30,top:30,width:"90%",height:"75%"},
+			      animation:{
+			        duration: 1000,
+			        easing: 'out',
+			      },
+			      vAxis: {minValue:0, maxValue:limit},
+			      hAxis: {gridlines:{count:0},logScale:true,textPosition:'none'},
+
+			    };
+
+	        var chart = new google.visualization.AreaChart(document.getElementById('memory'));
+	        chart.draw(data, options);
+	        $('#memorytext').html('');
+	        $('#memorytext').append('<br/><strong>Memory Allocated :</strong> '+limit+'MB &nbsp;<strong><br/>Memory Consumed :</strong> '+memory+'MB');
+	        setInterval(function(){ redrawMems(chart,data,options); },5000);
+	    }
+
+		function redrawMems(chart,data,options){
+
+			var chartData = data;
+			var row = chartData.getNumberOfRows();
+			var newrow = row;
+
+			if (row > 100) {
+				newrow = row - 1;
+	      		chartData.removeRow(Math.floor(0));
+			};
+
+	      	var rawData = jQuery.getJSON("{{ url('admin/home/mems');}}",function(data) {
+
+	      		var memory = Math.ceil(data.memory);
+      			var limit = Math.ceil(data.memorylimit);
+
+	      		var loadtime = currentTime();
+	      		$('#memorytext').html('');
+	      		chartData.insertRows(newrow, [[loadtime.toString(),memory,limit]]);
+	      		chart.draw(chartData, options);
+	      		$('#memorytext').html('');
+	        	$('#memorytext').append('<br/><strong>Memory Allocated :</strong> '+limit+'MB &nbsp;<strong><br/>Memory Consumed :</strong> '+memory+'MB');
+	      	});
+
+		}
+
+
+
+		function currentTime(){
+
+			var now = new Date();
+			var h = (now.getHours() <10)? '0' + now.getHours(): now.getHours();
+			var m= (now.getMinutes()<10)? '0' + (now.getMinutes() -1): (now.getMinutes()-1);
+			var s= (now.getSeconds()<10)? '0' + now.getSeconds(): now.getSeconds();
+
+			return h+":"+m+":"+s;
+
+		}
+
+	    init();
+
     </script>
 @endsection
