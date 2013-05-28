@@ -58,6 +58,7 @@
 
     {{ Asset::container('bootstrapper')->scripts() }}
     @section('scripts')
+    @include('admin::plugin.loggedin')
     <script type="text/javascript">
       $(document).ajaxStart(function() {
         $('<div class="loaders" />').appendTo(document.body);
@@ -68,6 +69,7 @@
         $('div.loaders').remove();
         $('div.loaders').removeClass("loading"); 
       });
+
     </script>
     @yield('scripts')
   </body>
