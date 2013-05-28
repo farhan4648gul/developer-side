@@ -11,7 +11,7 @@
 	<div data-role="panel" id="sidebar" data-theme="d" data-content-theme="a"  data-display="overlay">
 		{{$sidebar}}
 	</div>
-	<div data-role="header" data-theme="d" data-position-fixed="true">
+	<div data-role="header" data-theme="d" data-position="fixed">
 		<h4><small>3FDS Admnistrator Panel</small></h4>
 		<a href="#sidebar" data-icon="bars" data-iconpos="notext">Navigation</a>
 	</div>
