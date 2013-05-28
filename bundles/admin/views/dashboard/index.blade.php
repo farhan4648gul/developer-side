@@ -36,38 +36,24 @@
 	          	</div>
 	        </div>
 		</div>
-	</div>
-</div>
-<div class="row-fluid">
-	<div class="form-actions span4">
-  		<h4>Hard Disk Usage</h4>
 		<div class="row-fluid">
-          	<div class="span12">
-          		<center>
-          			<div id='hdd'></div>
-          		</center>
-          	</div>
-        </div>
-	</div>
-	<div class="form-actions span4">
-  		<h4>CPU Usage</h4>
-		<div class="row-fluid">
-          	<div class="span12">
-	          	<center>
-	          		<div id='cpu'></div>
-	          	</center>
-          	</div>
-        </div>
-	</div>
-	<div class="form-actions span4">
-  		<h4>Memory Usage</h4>
-		<div class="row-fluid">
-          	<div class="span12">
-          		<center>
-          			<div id='memory'></div>
-          		</center>
-          	</div>
-        </div>
+			<div class="form-actions span8">
+		  		<h4>Hard Disk Usage</h4>
+				<div class="row-fluid">
+		          	<div class="span12">
+		          		<div id='hdd'></div>
+		          	</div>
+		        </div>
+			</div>
+			<div class="form-actions span4">
+		  		<h4>CPU Usage</h4>
+				<div class="row-fluid">
+		          	<div class="span12">
+			          	<div id='cpu'></div>
+		          	</div>
+		        </div>
+			</div>
+		</div>
 	</div>
 </div>
 @endsection
@@ -76,7 +62,7 @@
 <script type='text/javascript' src='https://www.google.com/jsapi'></script>
     <script type='text/javascript'>
 
-      google.load('visualization', '1', {packages:['corechart']});
+      google.load('visualization', '1', {packages:['corechart','gauge']});
       google.setOnLoadCallback(init);
 
     	function init() {
@@ -92,6 +78,8 @@
 
       			drawServLoad(server);
       			drawMems(memory,limit);
+      			drawCpu(cpu);
+      			drawHDD(freeHdd,usedHdd);
       		});
 
 	    }
@@ -117,13 +105,13 @@
 			var five = parseFloat(parseFloat(server.load.five).toFixed(2));
 
 	        var data = new google.visualization.arrayToDataTable([
-	          ['Times', 'Loads'],
+	          ['Times', 'Current Loads'],
 	          [utc.toString() , five ],
 	          [utc.toString() , one ]
 	        ]);
 
 			var options = {
-			      colors: ['red'],
+			      colors: ['red','green'],
 			      legend:{position:'bottom'},
 			      chartArea:{left:30,top:30,width:"90%",height:"75%"},
 			      animation:{
@@ -225,7 +213,59 @@
 
 		}
 
+		function drawCpu(cpu){
 
+	        var data = google.visualization.arrayToDataTable([
+			  ['Label', 'Value'],
+			  ['CPU', cpu]
+			]);
+
+			var options = {
+			  width: 400, height: 120,
+			  redFrom: 90, redTo: 100,
+			  yellowFrom:75, yellowTo: 90,
+			  minorTicks: 5
+			};
+
+			var chart = new google.visualization.Gauge(document.getElementById('cpu'));
+			chart.draw(data, options);
+			setInterval(function(){ redrawCPU(chart,data,options); },5000);
+
+		}
+
+		function redrawCPU(chart,data,options){
+
+			var chartData = data;
+			chartData.removeRow(0);
+
+	      	var rawData = jQuery.getJSON("{{ url('admin/home/cpu');}}",function(data) {
+	      		var cpu = Math.ceil(data.cpu);
+	      		chartData.insertRows(0, [['CPU',cpu]]);
+	      		chart.draw(chartData, options);
+
+	      	});
+		}
+
+
+		function drawHDD(freeHdd,usedHdd){
+
+	        var data = google.visualization.arrayToDataTable([
+	          ['', 'Used Space',  'Free Space'],
+	          ['HDD', usedHdd, freeHdd]
+	        ]);
+
+	        var options = {
+	        	legend:{position:'bottom'},
+	        	colors: ['silver','blue'],
+	        	areaOpacity:0.5,
+	        	vAxis: {title: 'Gigabytes'},
+	          	isStacked: true
+	        };
+
+	        var chart = new google.visualization.SteppedAreaChart(document.getElementById('hdd'));
+	        chart.draw(data, options);
+
+		}
 
 		function currentTime(){
 
