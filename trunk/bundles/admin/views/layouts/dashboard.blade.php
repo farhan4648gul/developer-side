@@ -35,6 +35,7 @@
     <!-- {{ HTML::script('js/jquery.js') }}  -->
 
     {{ Asset::container('bootstrapper')->scripts() }}
+    @include('admin::plugin.loggedin')
     @yield('scripts')
   </body>
 </html>
