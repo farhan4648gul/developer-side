@@ -42,7 +42,7 @@ return array(
 	|
 	*/
 
-	'default' => 'mysql',
+	'default' => '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -59,15 +59,7 @@ return array(
 	|
 	*/
 
-	'connections' => array('mysql' => array(
-							'driver'   => 'mysql',
-							'host'     => 'localhost',
-							'database' => 'developerDB',
-							'username' => 'root',
-							'password' => '',
-							'charset'  => 'utf8',
-							'prefix'   => '',
-						)),
+	'connections' => array(),
 
 	/*
 	|--------------------------------------------------------------------------
