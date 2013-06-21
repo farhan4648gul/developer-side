@@ -31,7 +31,7 @@ class Navigator{
                   array(Navigation::HEADER, Str::upper('SYSTEM MANAGEMENT')),
                   array('Navigation Setup', url('admin/system/navigate'),false, false, null, 'chevron-right'),
                   array('System Logs', url('admin/system/logger'),false, false, null, 'chevron-right'),
-                  array('System Data', url('admin/data/board'),false, false, null, 'chevron-right'),
+                  array('Data Management', url('admin/data/board'),false, false, null, 'chevron-right'),
                   array(Navigation::HEADER, Str::upper('MODUL MANAGEMENT')),
                   array('Modul Registration', url('admin/modul/register'),false, false, null, 'chevron-right'),
                   array('Page Registration', url('admin/modul/page'),false, false, null, 'chevron-right'),
