@@ -1,5 +1,7 @@
 <?php namespace Admin\Libraries;
 
+use Laravel\Str as Str;
+
 /*********************************************************************
 *  Class : Crapcrush
 *  Function : File Reading Class
@@ -123,6 +125,37 @@ class Crapcrush{
 	    }
 
 	}
+
+	public static function dataModeling(){
+
+		$list = array('Select Model');
+
+		$dataModel = glob('bundles/admin/models/data/*');
+
+		$namespace = 'Admin/Models/Data';
+
+		foreach ($dataModel as $folder) {
+			if(is_dir($folder)){
+
+				$base = basename($folder);
+				$namespace2 = $namespace.Str::title($base);
+
+				$modelNode = glob($folder.'/*');
+
+				foreach ($modelNode as $value) {
+					$class = basename($value,'.php');
+					$list[$namespace2.'/'.$class] = $namespace2.'/'.$class;
+				}
+			}else{
+
+				$class = basename($folder,'.php');
+				$list[$namespace.'/'.$class] = $namespace.'/'.$class;
+			}
+		}
+
+		return $list;
+
+	} 
 }
 
 ?>
