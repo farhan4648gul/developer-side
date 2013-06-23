@@ -31,8 +31,15 @@
             </div>
           </div>
         </div>
-        
       </div>
+    </div>
+    <div id="actionStatModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-body">
+        <div id="actionStat"></div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div> -->
     </div>
     {{ Asset::container('bootstrapper')->scripts() }}
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
