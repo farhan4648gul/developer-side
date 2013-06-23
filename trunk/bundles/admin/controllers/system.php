@@ -167,9 +167,11 @@ class Admin_System_Controller extends Admin_Base_Controller {
 
         $desc = Link::find($input['id'])->modulpage()->first();
 
+        $alias = $desc->actionalias;
+
         Link::find($input['id'])->delete();
 
-        Log::write('System', 'Delete Navigation Page '.$desc->actionalias.' by '.Auth::user()->username);
+        Log::write('System', 'Delete Navigation Page '.$alias.' by '.Auth::user()->username);
 
         return Menu::navTree();
     }
