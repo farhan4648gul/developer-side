@@ -47,9 +47,58 @@ class Claims_App extends Eloquent
 
       }
 
+      public static function listClaims(){
+
+            $allClaims = Claims_App::left_join('data_claims_cat AS c', 'claims.claimscat', '=', 'c.claimcatid')
+                        ->left_join('data_status AS s', 'claims.status', '=', 's.statusid')
+                        ->get(array('s.status_name', 'c.claims_cat_name', 'claims.*'));
+
+            $datagrid = new Datagrid;
+            $datagrid->setFields(array('claimsref' =>'Reference Number'));
+            $datagrid->setFields(array('claims_cat_name' =>'Claims Category'));
+            $datagrid->setFields(array('created_at' =>'Date Apply'));
+            $datagrid->setFields(array('applymonth' =>'Month Apply For'));
+            $datagrid->setFields(array('status_name' =>'Status'));
+            $datagrid->setAction('Modify','requestDetail',false);
+            $datagrid->setAction('delete','deleteData',true,array('claimid'));
+            $datagrid->setTable('claimsApp','table table-bordered table-hover table-striped table-condensed');
+            $datagrid->build($allClaims,'claimid');
+
+            return $datagrid->render();
+
+      }
+
+
+      public static function listDetails($claimsId){
+
+        $allClaims = Claims_App::find($claimsId)->detail()->get();
+
+        $datagrid = new Datagrid;
+        $datagrid->setFields(array('detaildate' =>'Date'));
+        $datagrid->setFields(array('detaildesc' =>'Description'));
+        $datagrid->setFields(array('detailfrom' =>'Distance From'));
+        $datagrid->setFields(array('detailto' =>'Distance To'));
+        $datagrid->setFields(array('detailmile' =>'Milage'));
+        $datagrid->setFields(array('detailtoll' =>'Toll'));
+        $datagrid->setFields(array('detailpark' =>'Parking'));
+        $datagrid->setAction('edit','editDetail',true,array('claimdetailid'));
+        $datagrid->setAction('delete','deleteDetail',true,array('claimdetailid'));
+        $datagrid->setAction('receipt','uploadResit',true,array('claimdetailid'));
+        $datagrid->setTable('claimsDetails','table table-bordered table-hover table-striped table-condensed');
+        $datagrid->build($allClaims,'claimdetailid');
+
+        return $datagrid->render();
+
+      }
+
       public function claimcategory()
       {
-        return $this->belongs_to('Data_Claims_Cat','claimscat');
+        return $this->belongs_to('Data_Claims_Cat');
+      }
+
+      public function detail()
+      {
+        return $this->has_many('Claims_Detail','claimid');
       }
 
       public static function appInfo($appID){
