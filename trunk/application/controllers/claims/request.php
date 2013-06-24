@@ -20,6 +20,7 @@ class Claims_Request_Controller extends Base_Controller {
 	{
 
 		$data['claimsCat'] = Cat::arrayCats();
+        $data['claimlist'] = Claims_App::listClaims();
 
 		return View::make('claims.request.request',$data);
 	}
@@ -30,7 +31,10 @@ class Claims_Request_Controller extends Base_Controller {
 
 		$claimID = Claims_App::applyclaims($input);
 
-		return Redirect::to('claims/request/requestDetail/'.$claimID);
+        // $data['list'] = Claims_App::listClaims();
+        $data['url'] = 'claims/request/requestDetail/'.$claimID;
+
+        return json_encode($data);
 	}
 
 	public function get_requestDetail()
