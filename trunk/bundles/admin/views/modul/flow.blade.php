@@ -1,4 +1,4 @@
-@layout('admin::layouts.main')
+@layout($syslayout)
 
 @section('content')
 <div class="page-header">
