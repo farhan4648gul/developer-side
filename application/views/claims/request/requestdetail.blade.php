@@ -226,9 +226,9 @@
       for (x in data)
       {   
         if(x == 1){
-          $('#recCoru .carousel-inner').append('<div class="active item"><img src="{{ url("'+ data[x ]+'")}}"></div>');
+          $('#recCoru .carousel-inner').append('<div class="active item"><img src="{{ url("'+ data[x ]+'")}}" width="200px" height="200px"></div>');
         }else{
-          $('#recCoru .carousel-inner').append('<div class="item"><img src="{{ url("'+ data[x ]+'")}}"></div>');
+          $('#recCoru .carousel-inner').append('<div class="item"><img src="{{ url("'+ data[x ]+'")}}" width="200px" height="200px"></div>');
         }
         
       }
