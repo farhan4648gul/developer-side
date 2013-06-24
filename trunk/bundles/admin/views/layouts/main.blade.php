@@ -29,31 +29,20 @@
   </head>
   <body>
     
-    <div class="row-fluid">
-      <div class="span12">
-        <div class="container-fluid">
-          <div class="row">&nbsp;</div>
-          <div class="row-fluid">
-            <div class="span12">
-
-              <div class="row-fluid">
-                <div class="span2">
-                  <!--Sidebar content-->
-                  {{$sidebar}}
-                </div>
-                <div class="span10">
-                  <!--Body content-->
-                  @yield('content')
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+      {{$sidebar}}
     </div>
+    <div class="span10">
+      <!--Body content-->
+       @yield('content')
+    </div>
+  </div>
+</div>
 
-  <!-- // <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script> -->
+<!-- <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script> -->
     <!-- {{ HTML::script('js/jquery.js') }}  -->
 
     {{ Asset::container('bootstrapper')->scripts() }}
