@@ -22,7 +22,7 @@
   <div class="control-group">
     <label class="control-label" for="navheaderid">Data</label>
     <div class="controls">
-    	{{ Form::hidden('groupID',$groupID)}}
+    	{{ Form::hidden('groupid',$groupID)}}
     	{{ Form::hidden('id')}}
       	{{ Form::xlarge_text('data',null,array('placeholder'=>'Type Data Value','required')) }}
     </div>
