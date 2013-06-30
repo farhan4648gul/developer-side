@@ -21,18 +21,9 @@
 </div>
 <div class="modal-body">
 {{ Form::open('admin/user/role', 'POST', array('id' => 'addDataForm', 'class' => 'form-horizontal')) }}
-  <div class="control-group">
-    <label class="control-label" for="navheaderid">Data Group</label>
-    <div class="controls">
-      {{ Form::xlarge_text('group_name',null,array('placeholder'=>'Type Data Group Name','required')) }}
-    </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="navheaderid">Data Model</label>
-    <div class="controls">
-      {{ Form::xlarge_select('group_model', $model); }}
-    </div>
-  </div>
+{{ Form::control_group(Form::label('table', 'Data Group Name'),Form::large_text('group_name',null,array('placeholder'=>'Type Data Group Name','required'))) }}
+{{ Form::control_group(Form::label('group_model', 'Table Name'),Form::large_text('group_model', '', array('required'))) }}
+{{ Form::control_group(Form::label('group_key', 'Primary Key ID'),Form::large_text('group_key', '', array('required'))) }}
 {{ Form::close()}}
 </div>
 <div class="modal-footer">
