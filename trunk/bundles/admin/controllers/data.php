@@ -40,7 +40,8 @@ class Admin_Data_Controller extends Admin_Base_Controller {
         //  $role = Admin_UserRole::find($input['roleid']);
         // endif;
         $dataGroup->group_name  = Str::upper($input['group_name']);
-        $dataGroup->group_model  = str_replace('"','',str_replace('/', '"\"', $input['group_model']));
+        $dataGroup->group_model  = $input['group_model'];
+        $dataGroup->group_key  = $input['group_key'];
         $dataGroup->save();
 
 		return Group::listData();
@@ -50,33 +51,31 @@ class Admin_Data_Controller extends Admin_Base_Controller {
 
         $input = Input::get();
 
-        $dataGroup = Group::find($input['groupID']);
+        Group::getDataModel($input['groupid']);
 
-		Group::setDataInput($dataGroup->group_model,$input);
+		Group::setDataInput($input);
 
-		return Group::getDataList($dataGroup->group_model);
+		return Group::getDataList();
 	}
 
 	public function post_dataremove(){
 
         $input = Input::get();
 
-        $dataGroup = Group::find($input['groupid']);
+        Group::getDataModel($input['groupid']);
 
-		Group::remDataInput($dataGroup->group_model,$input['id']);
+		Group::remDataInput($input['id']);
 
-		return Group::getDataList($dataGroup->group_model);
+		return Group::getDataList();
 	}
 
     public function get_datainfo(){
 
         $input = Input::get();
 
-        $dataGroup = Group::find($input['groupid']);
+        Group::getDataModel($input['groupid']);
 
-        $model = Group::getDataModel($dataGroup->group_model);
-
-        $data = $model::getInfo($input['id']);
+        $data = Group::getDataInfo($input['id']);
 
         return json_encode($data);
     }
@@ -85,13 +84,11 @@ class Admin_Data_Controller extends Admin_Base_Controller {
 
 		$groupID = URI::segment(4);
 
-		$dataGroup = Group::find($groupID);
+		Group::getDataModel($groupID);
 
-		// $data = Group::getDataModel($dataGroup->group_model);
-
-		$data['list'] = Group::getDataList($dataGroup->group_model);
+		$data['list'] = Group::getDataList();
 		$data['groupID'] = $groupID;
-		$data['header'] = $dataGroup->group_name;
+		$data['header'] = Group::getDataHeader();
 
 		return View::make('admin::data.data',$data);
 
