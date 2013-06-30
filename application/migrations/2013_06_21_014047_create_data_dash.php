@@ -16,6 +16,7 @@ class Create_Data_Dash {
 		    $table->increments('dmid');
 		    $table->string('group_name', 100);
 		    $table->string('group_model', 100);
+		    $table->string('group_key', 100);
 		    $table->timestamps();
 
 		});
