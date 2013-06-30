@@ -1,21 +1,25 @@
-<div class="row-fluid">
-	<div class="navbar navbar-static-top navbar-inverse">
-		<div class="navbar-inner">
-			<div class="span3 pull-right">
-				<div class="btn-group span12 pull-right ">
-				  <a class="btn btn-primary span10" style="text-align:left" disable="disable" href="#profileModal" onclick="profileInfo('{{url('admin/user/profile')}}')">{{ Str::title(Auth::user()->userprofile->fullname) }}</a>
-				  <a class="btn btn-primary dropdown-toggle span2" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-				  <ul class="dropdown-menu">
-				    <li><a href="#profileModal" onclick="profileInfo('{{url('console/user/profile')}}')"><i class="icon-user"></i> Profile</a></li>
-				    <li><a href="#resetpasswordModal" data-toggle="modal"><i class="icon-lock"></i> Update Login</a></li>
-				    <li class="divider"></li>
-				    <li><a href="{{ url('console/auth/logout') }}"><i class="icon-off"></i> Logout</a></li>
-				  </ul>
-				</div>
-			</div>
-		</div>
-	</div>	
+<div class="navbar navbar-static-top navbar-inverse nav">
+    <div class="navbar-inner">
+        <div class="span12">
+            <!-- <div class="pull-right">{{ Image::rounded('http://placehold.it/40x40'); }}</div> -->
+          	<div class="nav-collapse collapse">
+              	<div class="pull-right">
+	                <ul class="nav pull-right">
+	                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Str::title(Auth::user()->userprofile->fullname) }} <b class="caret"></b></a>
+	                        <ul class="dropdown-menu">
+	                            <li><a href="#profileModal" onclick="profileInfo('{{url('console/user/profile')}}')"><i class="icon-user"></i> Profile</a></li>
+	                            <li><a href="#resetpasswordModal" data-toggle="modal"><i class="icon-lock"></i> Update Login</a></li>
+	                            <li class="divider"></li>
+	                            <li><a href="{{ url('console/auth/logout') }}"><i class="icon-off"></i> Logout</a></li>
+	                        </ul>
+	                    </li>
+	                </ul>
+            	</div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <div id="profileModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -118,87 +122,3 @@
 	    <button id="resetBtn" class="btn btn-primary">Update</button>
 	  </div>
 	</div>
-@section('scripts')
-
-<script>
-
-	function profileInfo(url){
-
-		$('#profileModal').modal('toggle');
-
-		$.get(url, function(data,status){
-
-			for (x in data)
-			{ 	
-				$('#updateProfileForm input[name="'+ x +'"]' ).val(data[x]);
-			}
-
-		  },"json");
-
-	}
-
-
-	$('#editProfileBtn').click(function() {
-		
-		$.post('{{url("console/user/profile")}}', $("#updateProfileForm").serialize(),function(data) {
-			      sourcedata = data;
-			    }).success(function() { 
-					
-					for (x in sourcedata)
-					{ 	
-						$('#updateProfileForm input[name="'+ x +'"]' ).val(sourcedata[x]);
-					}
-
-					var notfail = '<div class="alert alert-success" >' +
-								'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-								'<strong>Update Success!!!</strong> Profile information successfully updated.</div>'
-
-
-					$('.modal-body').prepend(notfail);
-
-			    }).fail(function() { 
-
-					var notfail = '<div class="alert alert-error" >' +
-								'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-								'<strong>Update Fail!!!</strong> Profile information update failed.</div>'
-
-
-					$('.modal-body').prepend(notfail);
-
-			    });
-
-	});
-
-
-
-	$('#resetBtn').click(function() {
-		
-		$.post('{{url("console/user/resetpassword")}}', $("#resetForm").serialize(),function(data) {
-			      sourcedata = data;
-			    }).success(function() { 
-
-					var notfail = '<div class="alert alert-success" >' +
-								'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-								'<strong>Update Success!!!</strong> Password successfully updated.</div>'
-
-
-					$('#resetModalBody').prepend(notfail);
-					$('#resetForm :input').val('');
-
-			    }).fail(function() { 
-
-					var notfail = '<div class="alert alert-error" >' +
-								'<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-								'<strong>Update Fail!!!</strong> Password update failed.</div>'
-
-
-					$('#resetModalBody').prepend(notfail); 
-
-			    });
-
-
-	});
-
-
-</script>
-@endsection
