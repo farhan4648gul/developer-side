@@ -1,6 +1,7 @@
 <?php namespace Admin\Models\Data;
 use \Laravel\Database\Eloquent\Model as Eloquent,
-	Datagrid;
+	Datagrid, Laravel\Config as Config,
+    Laravel\Database as DB;
 
 class Group extends Eloquent {
 
@@ -24,19 +25,25 @@ class Group extends Eloquent {
 
     }
 
-    public static function getDataModel($groupClass){
 
-    	$model = new $groupClass;
 
-    	return $model; 
+    public static function getDataModel($groupID){
+
+        $dataGroup = Group::find($groupID);
+
+        Content::$table = $dataGroup->group_model;
+        Content::$key = $dataGroup->group_key;
+        Content::$timestamps = 'true';
+        Content::$header = $dataGroup->group_name;
 
     }
 
-    public static function setDataInput($groupClass,$input){
+
+    public static function setDataInput($input){
 
     	try{
 
-    		$groupClass::setData($input);
+    		Content::setData($input);
 
     	}catch(Exception $e) {
                 Log::write('Data', 'Data Insertion Not Success');
@@ -44,11 +51,11 @@ class Group extends Eloquent {
 
     }
 
-    public static function remDataInput($groupClass,$dataId){
+    public static function remDataInput($dataId){
 
     	try{
 
-    		$groupClass::remData($dataId);
+    		Content::remData($dataId);
 
     	}catch(Exception $e) {
                 Log::write('Data', 'Data Removal Not Success');
@@ -56,9 +63,19 @@ class Group extends Eloquent {
 
     }
 
-    public static function getDataList($groupClass){
+    public static function getDataList(){
 
-    	return $groupClass::listData();
+        return Content::genListData();
+    }
+
+    public static function getDataInfo($id){
+
+        return Content::getInfo($id);
+    }
+
+    public static function getDataHeader(){
+
+        return Content::$header;
     }
 
 }
