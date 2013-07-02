@@ -17,7 +17,7 @@ class Role extends Eloquent {
 
 	public static function listRole(){
 
-		$rolelist = Role::all();
+		$rolelist = Role::paginate(10);
 
 		$datagrid = new Datagrid;
 		$datagrid->setFields(array('role'=>'Role','roledesc'=>'Role Description'));
