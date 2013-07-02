@@ -27,7 +27,7 @@ class Content extends Eloquent {
 	 **/
     public static function genListData(){
 
-        $allContent = Content::all();
+        $allContent = Content::paginate(10);
 
         $datagrid = new Datagrid;
 
