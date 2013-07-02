@@ -11,7 +11,7 @@ class Group extends Eloquent {
 
     public static function listData(){
 
-        $allGroup = Group::all();
+        $allGroup = Group::paginate(10);
 
         $datagrid = new Datagrid;
         $datagrid->setFields(array('group_name' =>'Data Group'));
