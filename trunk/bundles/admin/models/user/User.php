@@ -35,7 +35,7 @@ class User extends Eloquent {
     
     public static function listUser(){
 
-        $allUser = User::where('role','<>','1')->get();
+        $allUser = User::where('role','<>','1')->paginate(10);
 
         $datagrid = new Datagrid;
         $datagrid->setFields(array('userprofile/fullname' =>'Fullname'));
