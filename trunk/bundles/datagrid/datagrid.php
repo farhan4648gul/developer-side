@@ -44,16 +44,18 @@ class Datagrid
 
     var $hasAction = false;
     var $hasAjax = false;
-    var $hasNumbering = true;
+    var $hasNumbering = false;
 
     var $primaryKey = '';
+    var $pagination = '';
 
 
 
     public function build($query,$primaryKey)
     {
         $this->primaryKey = $primaryKey;
-        $this->queryData = $query;   
+        $this->queryData = $query->results; 
+        $this->pagination = $query->links(); 
 
     }
 
@@ -128,7 +130,7 @@ class Datagrid
         $table .=$this->createHeader();
         $table .=$this->createFields();
         $table .="</table>";
-
+        $table .="<div style='text-align:center'>".$this->pagination."</div>";
         return $table;
 
     }
