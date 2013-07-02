@@ -13,7 +13,7 @@ class Status extends Eloquent {
 
     public static function listData(){
 
-        $allCat = Status::all();
+        $allCat = Status::paginate(10);
 
         $datagrid = new Datagrid;
         $datagrid->setFields(array('status_name' =>'Status'));
