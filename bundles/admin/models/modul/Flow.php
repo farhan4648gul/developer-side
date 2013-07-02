@@ -16,7 +16,7 @@ class Flow extends Eloquent {
 
     public static function listFlow(){
 
-        $allFlow = Flow::all();
+        $allFlow = Flow::paginate(10);
 
         $datagrid = new Datagrid;
         $datagrid->setFields(array('flowname' =>'Flow'));
