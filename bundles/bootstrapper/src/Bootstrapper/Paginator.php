@@ -80,7 +80,7 @@ class Paginator extends \Laravel\Paginator
      *
      * @return string
      */
-    public function links($adjacent = 3, $alignment = self::ALIGN_LEFT, $size = self::SIZE_DEFAULT)
+    public function links($adjacent = 3, $alignment = self::ALIGN_RIGHT, $size = self::SIZE_MINI)
     {
         if ($this->last <= 1) return '';
 
@@ -97,7 +97,7 @@ class Paginator extends \Laravel\Paginator
             $links = $this->slider($adjacent);
         }
 
-        $content = $this->previous().' '.$links.' '.$this->next();
+        $content = $this->previous('<<').' '.$links.' '.$this->next('>>');
 
 
         $attributes = array("class" => "pagination".$alignment.$size);
