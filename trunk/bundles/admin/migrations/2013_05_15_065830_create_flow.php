@@ -1,6 +1,6 @@
 <?php
 
-class Create_Flow {
+class Admin_Create_Flow {
 
 	/**
 	 * Make changes to the database.
