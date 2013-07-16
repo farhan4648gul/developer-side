@@ -138,9 +138,9 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
     public function get_step(){
 
         $data['flow'] =  Str::title(Flow::find(URI::segment(4))->flowname);
-        $data['steplist'] = Step::listSteps(URI::segment(4));
+        $data['steplist'] = Menu::flowtree(URI::segment(4));
         $data['allrole'] = Role::arrayRoles();
-        $data['allstep'] = Step::arraySteps();
+        //$allstep = Step::steploop(URI::segment(4));
 
         return View::make('admin::modul.step',$data);
 
@@ -164,12 +164,14 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
 
         $step->step  = Str::title($input['step']);
         $step->flowid  = $input['flowid'];
+        $step->parentid  = $input['parentid'];
+        $step->roleid  = $input['roleid'];
         $step->timestamp();
         $step->save();
 
         Log::write('Modul', $logs.$input['step'].' by '.Auth::user()->username);
 
-        return Step::listSteps($input['flowid']);
+        return Menu::flowtree($input['flowid']);
 
     }
 
@@ -181,6 +183,7 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
         $data['step'] = $step->step;
         $data['stepid'] = $step->stepid;
         $data['flowid'] = $step->flowid;
+        $data['parentid'] = $step->parentid;
 
         return json_encode($data);
     }
@@ -196,11 +199,12 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
     public function post_deletestep(){
         $input = Input::get();
 
-        Log::write('User', 'Delete Step ID '.$input['id'].' by '.Auth::user()->username);
+        Log::write('User', 'Delete Step ID '.Step::find($input['id'])->step.' by '.Auth::user()->username);
 
         Step::find($input['id'])->delete();
+        Step::where('parentid','=',$input['id'])->delete();
 
-        return Step::listSteps($input['flowid']);
+        return Menu::flowtree($input['flowid']);
     }
 
 }
