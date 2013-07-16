@@ -1,6 +1,6 @@
 <?php
 
-class Create_Module_Page {
+class Admin_Create_Module_Page {
 
 	/**
 	 * Make changes to the database.
