@@ -1,6 +1,6 @@
 <?php
 
-class Create_User_Profile {
+class Admin_Create_User_Profile {
 
 	/**
 	 * Make changes to the database.
