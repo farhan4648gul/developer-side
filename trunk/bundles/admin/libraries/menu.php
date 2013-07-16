@@ -5,6 +5,7 @@ use Bootstrapper\Navigation as Navigation,
     Laravel\URI as URI,
     Bootstrapper\Form as Form,
     Admin\Models\Navigation\Header as Header,
+    Admin\Models\Modul\Step as Step,
     Admin\Models\Modul\Page as Page;
 
 /*********************************************************************
@@ -189,7 +190,7 @@ class Menu extends Crapcrush{
 
 	}
 
-    public static function navTree(){
+  public static function navTree(){
 
     $data = Header::navigationdata();
 
@@ -240,6 +241,51 @@ class Menu extends Crapcrush{
     }
 
     return $view;
+
+  }
+
+  public static function flowtree($flowid){
+
+    $structure = '';
+    $data = Step::steploop($flowid);
+
+    if(!empty($data)){
+      $structure .= '<ul class="nav nav-list">';
+      foreach ($data as $key => $value) {
+        $structure .= '<li>';
+        $structure .= '<a href="#" onclick="deleteStep('.$key.')" style="float:right">&nbsp;<i class="icon-remove-sign"></i></a>';
+        $structure .= '<a href="#" onclick="editStep('.$key.')" style="float:right">&nbsp;<i class="icon-edit"></i></a>';
+        $structure .= '<a href="#" onclick="addStep('.$key.')" ><i class="icon-bookmark"></i>&nbsp;'.Str::title($value['desc']).'&nbsp;<i class="icon-plus-sign"></i></a>';
+        $structure .= self::looper($value['child']);
+        $structure .= '</li>';
+      }
+      $structure .=  '</ul>';
+
+    }else{
+      $structure = '<a href="#addDataModal" data-toggle="modal" >Add Steps&nbsp;<i class="icon-plus"></i></a>';
+    }
+
+    return $structure;
+
+  }
+
+  protected static function looper($child){
+
+      $structure = '';
+      if(!empty($child)){
+        $structure .= '<ul class="nav nav-list" style="margin-left:60px;padding-left:0px;padding-right:0px;border-left-width:3px;border-left-style:solid;border-left-color:#000">';
+        foreach ($child as $key => $value) {
+          $structure .= '<li>';
+          $structure .= '<a href="#" onclick="deleteStep('.$key.')"  data-toggle="tooltip" data-title="remove step" style="float:right">&nbsp;<i class="icon-remove-sign"></i></a>';
+          $structure .= '<a href="#" onclick="editStep('.$key.')" style="float:right">&nbsp;<i class="icon-edit"></i></a>';
+          $structure .= '<a href="#" onclick="addStep('.$key.')" data-toggle="modal" ><i class="icon-arrow-right"></i>&nbsp;'.Str::title($value['desc']).'&nbsp;<i class="icon-plus-sign"></i></a>';
+          $structure .= self::looper($value['child']);
+          $structure .= '</li>';
+        }
+        $structure .=  '</ul>';
+      }
+
+      return $structure;
 
   }
 
