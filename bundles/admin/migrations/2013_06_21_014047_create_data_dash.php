@@ -1,6 +1,6 @@
 <?php
 
-class Create_Data_Dash {
+class Admin_Create_Data_Dash {
 
 	/**
 	 * Make changes to the database.
