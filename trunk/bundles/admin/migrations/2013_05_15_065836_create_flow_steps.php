@@ -1,6 +1,6 @@
 <?php
 
-class Create_Flow_Steps {
+class Admin_Create_Flow_Steps {
 
 	/**
 	 * Make changes to the database.
@@ -17,7 +17,8 @@ class Create_Flow_Steps {
 		    $table->integer('flowid');
 		    $table->string('step', 100);
 		    $table->integer('roleid');
-		    $table->integer('next');
+		    $table->integer('parentid');
+		    $table->integer('state');
 		    $table->integer('condition1');
 		    $table->integer('condition2');
 		    $table->timestamps();
