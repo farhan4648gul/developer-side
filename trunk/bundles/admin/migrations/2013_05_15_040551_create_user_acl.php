@@ -1,6 +1,6 @@
 <?php
 
-class Create_User_Acl {
+class Admin_Create_User_Acl {
 
 	/**
 	 * Make changes to the database.
