@@ -1,6 +1,6 @@
 <?php
 
-class Create_User_Role {
+class Admin_Create_User_Role {
 
 	/**
 	 * Make changes to the database.
