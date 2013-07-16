@@ -1,6 +1,6 @@
 <?php
 
-class Navigations_Header {
+class Admin_Navigations_Header {
 
 	/**
 	 * Make changes to the database.
