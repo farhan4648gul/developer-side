@@ -1,6 +1,6 @@
 <?php
 
-class Navigations_Pages {
+class Admin_Navigations_Pages {
 
 	/**
 	 * Make changes to the database.
