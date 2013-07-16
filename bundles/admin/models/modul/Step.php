@@ -22,8 +22,6 @@ class Step extends Eloquent {
         $datagrid->setFields(array('next' =>'Next Action'));
         $datagrid->setFields(array('condition1' =>'Condition Action 1'));
         $datagrid->setFields(array('condition2' =>'Condition Action 2'));
-        // $datagrid->setFields(array('created_at' =>'Created'));
-        // $datagrid->setFields(array('updated_at' =>'Updated'));
         $datagrid->setAction('edit','editStep',true,array('stepid'));
         $datagrid->setAction('delete','deleteStep',true,array('stepid'));
         $datagrid->setTable('steps','table table-bordered table-hover table-striped table-condensed');
@@ -48,5 +46,39 @@ class Step extends Eloquent {
 
 		return $arraySteps;
 	}
+
+    public static function steploop($flowid){
+
+        $trees = array();
+        $first = Step::where('parentid','=',0)->where('flowid','=',$flowid)->get();
+
+        if($first){
+            foreach ($first as $value) {
+                if(!empty($value)){
+                    $trees[$value->stepid]['desc'] = $value->step;
+                    $trees[$value->stepid]['child'] = self::looper($value->stepid,$flowid);
+                }
+            }
+        }
+
+        return $trees;
+
+    }
+
+    protected static function looper($id,$flowid){
+
+        $trees = array();
+        $child = Step::where('parentid','=',$id)->where('flowid','=',$flowid)->get();
+
+        foreach ($child as $cvalue) {
+            if(!empty($cvalue)){
+                $trees[$cvalue->stepid]['desc'] = $cvalue->step;
+                $trees[$cvalue->stepid]['child'] = self::looper($cvalue->stepid,$flowid);
+            }
+        }
+
+        return $trees;
+
+    }
 
 }
