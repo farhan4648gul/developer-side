@@ -50,6 +50,8 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
 
         Log::write('Module', 'Registering Modul & Page by '.Auth::user()->username);
 
+        return Menu::page();
+
     }
 
     /**
