@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>3F Suite Administrator Login</title>
+    <title>Administrator Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     {{ Asset::container('bootstrapper')->styles() }}
