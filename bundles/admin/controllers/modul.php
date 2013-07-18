@@ -139,8 +139,8 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
 
     public function get_step(){
 
-        $data['flow'] =  Str::title(Flow::find(URI::segment(4))->flowname);
-        $data['steplist'] = Menu::flowtree(URI::segment(4));
+        $data['flow'] =  Str::title(Flow::find(URI::segment(5))->flowname);
+        $data['steplist'] = Menu::flowtree(URI::segment(5));
         $data['allrole'] = Role::arrayRoles();
         //$allstep = Step::steploop(URI::segment(4));
 
@@ -152,15 +152,11 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
 
         $input = Input::get();
 
-        if($input['stepid'] == NULL):
+        if(!isset($input['stepid'])):
             $logs = 'Add New Step ';
             $step = new Step;
         else:
             $step = Step::find($input['stepid']);
-            $step->roleid  = $input['roleid'];
-            $step->next  = $input['next'];
-            $step->condition1  = $input['condition1'];
-            $step->condition2  = $input['condition2'];
             $logs = 'Edit Step ';
         endif;
 
