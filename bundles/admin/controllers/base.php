@@ -10,8 +10,6 @@ class Admin_Base_Controller extends Controller {
 
         parent::__construct();
 
-        Admin\Libraries\Sneakpeak::onRequestStart();
-
         $detect = new Mobile_Detect;
 
         if($detect->isMobile() || $detect->isTablet()){
@@ -31,30 +29,30 @@ class Admin_Base_Controller extends Controller {
 
         $this->filter('before', 'auth');
 
-        Asset::container('bootstrapper')
-            ->bundle('admin')
-            ->add('bootstrap',            'css/bootstrap.min.css')
-            ->add('bootstrap-responsive', 'css/bootstrap-responsive.min.css')
-            ->add('jquery',               'js/jquery-1.9.1.min.js')
-            ->add('bootstrap-js',         'js/bootstrap.min.js', 'jquery');
+        // Asset::container('bootstrapper')
+        //     ->bundle('admin')
+        //     ->add('bootstrap',            'css/bootstrap.min.css')
+        //     ->add('bootstrap-responsive', 'css/bootstrap-responsive.min.css')
+        //     ->add('jquery',               'js/jquery-1.9.1.min.js')
+        //     ->add('bootstrap-js',         'js/bootstrap.min.js', 'jquery');
 
-        // Define unminified version of the assets
-        Asset::container('bootstrapper-unminified')
-            ->bundle('admin')
-            ->add('bootstrap',            'css/bootstrap.css')
-            ->add('bootstrap-responsive', 'css/bootstrap-responsive.css')
-            ->add('jquery',               'js/jquery-1.9.1.js')
-            ->add('bootstrap-js',         'js/bootstrap.js', 'jquery');
+        // // Define unminified version of the assets
+        // Asset::container('bootstrapper-unminified')
+        //     ->bundle('admin')
+        //     ->add('bootstrap',            'css/bootstrap.css')
+        //     ->add('bootstrap-responsive', 'css/bootstrap-responsive.css')
+        //     ->add('jquery',               'js/jquery-1.9.1.js')
+        //     ->add('bootstrap-js',         'js/bootstrap.js', 'jquery');
 
-        Asset::container('mobile')
-            ->bundle('admin')
-            ->add('bootstrap',            'css/bootstrap.min.css')
-            ->add('mobile-css',           'mobile/jquery.mobile-1.3.1.min.css')
-            ->add('bootstrap-responsive', 'css/bootstrap-responsive.min.css')
-            ->add('jquery',               'js/jquery-1.9.1.min.js')
-            ->add('mobile-panel',         'mobile/jquery.mobile.panel.css')
-            ->add('mobile-js',            'mobile/jquery.mobile-1.3.1.min.js', 'jquery')
-            ->add('bootstrap-js',         'js/bootstrap.min.js', 'jquery');
+        // Asset::container('mobile')
+        //     ->bundle('admin')
+        //     ->add('bootstrap',            'css/bootstrap.min.css')
+        //     ->add('mobile-css',           'mobile/jquery.mobile-1.3.1.min.css')
+        //     ->add('bootstrap-responsive', 'css/bootstrap-responsive.min.css')
+        //     ->add('jquery',               'js/jquery-1.9.1.min.js')
+        //     ->add('mobile-panel',         'mobile/jquery.mobile.panel.css')
+        //     ->add('mobile-js',            'mobile/jquery.mobile-1.3.1.min.js', 'jquery')
+        //     ->add('bootstrap-js',         'js/bootstrap.min.js', 'jquery');
 
 
         Config::set('auth.driver', 'adminauth');
