@@ -2,6 +2,7 @@
 
 use Bootstrapper\Navigation as Navigation,
     Laravel\Str as Str,
+    Laravel\Lang as Lang,
     Laravel\URI as URI;
 
 /*********************************************************************
@@ -26,19 +27,19 @@ class Navigator{
       $flow = (URI::segment(3) == 'step')?true:false;
 
       $navValue = array(
-                  array(Navigation::HEADER, Str::upper('MONITOR PANEL')),
-                  array('Dashboard', url('admin/home/dashboard'),false, false, null, 'tasks'),
-                  array(Navigation::HEADER, Str::upper('SYSTEM MANAGEMENT')),
-                  array('Data Management', url('admin/data/board'),false, false, null, 'chevron-right'),
-                  array('Page Registration', url('admin/modul/page'),false, false, null, 'chevron-right'),
-                  array('Flow Management', url('admin/modul/flow'),$flow, false, null, 'chevron-right'),
-                  array('Navigation Setup', url('admin/system/navigate'),false, false, null, 'chevron-right'),
-                  array('System Logs', url('admin/system/logger'),false, false, null, 'chevron-right'),
-                  array(Navigation::HEADER, Str::upper('USER MANAGEMENT')),
-                  array('User List', url('admin/user/list'),false, false, null, 'chevron-right'),
-                  array('User Role', url('admin/user/role'),false, false, null, 'chevron-right'),
-                  array(Navigation::HEADER, Str::upper('LOGOUT')),
-                  array('Logout', url('admin/login/logout'),false, false, null, 'off'),
+                  array(Navigation::HEADER, Str::upper(Lang::line('admin.monitor')->get())),
+                  array(Lang::line('admin.dashboard')->get(), url('admin/home/dashboard'),false, false, null, 'tasks'),
+                  array(Navigation::HEADER, Str::upper(Lang::line('admin.sysmgmt')->get())),
+                  array(Lang::line('admin.data')->get(), url('admin/data/board'),false, false, null, 'chevron-right'),
+                  array(Lang::line('admin.page')->get(), url('admin/modul/page'),false, false, null, 'chevron-right'),
+                  array(Lang::line('admin.flow')->get(), url('admin/modul/flow'),$flow, false, null, 'chevron-right'),
+                  array(Lang::line('admin.nav')->get(), url('admin/system/navigate'),false, false, null, 'chevron-right'),
+                  array(Lang::line('admin.log')->get(), url('admin/system/logger'),false, false, null, 'chevron-right'),
+                  array(Navigation::HEADER, Str::upper(Lang::line('admin.sysuser')->get())),
+                  array(Lang::line('admin.navuserlist')->get(), url('admin/user/list'),false, false, null, 'chevron-right'),
+                  array(Lang::line('admin.navuserrole')->get(), url('admin/user/role'),false, false, null, 'chevron-right'),
+                  array(Navigation::HEADER, Lang::line('global.logout')->get()),
+                  array(Lang::line('global.logout')->get(), url('admin/login/logout'),false, false, null, 'off'),
                   );
     
       return Navigation::lists(Navigation::links($navValue));
