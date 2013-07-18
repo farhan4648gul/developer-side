@@ -26,7 +26,7 @@ class Navigator{
       $flow = (URI::segment(3) == 'step')?true:false;
 
       $navValue = array(
-                  array(Navigation::HEADER, Str::upper('EIS MANAGEMENT')),
+                  array(Navigation::HEADER, Str::upper('MONITOR PANEL')),
                   array('Dashboard', url('admin/home/dashboard'),false, false, null, 'tasks'),
                   array(Navigation::HEADER, Str::upper('SYSTEM MANAGEMENT')),
                   array('Data Management', url('admin/data/board'),false, false, null, 'chevron-right'),
