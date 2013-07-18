@@ -20,8 +20,9 @@
 </div>
 <div class="modal-body">
 {{ Form::open('admin/user/role', 'POST', array('id' => 'addDataForm', 'class' => 'form-horizontal')) }}
-{{ Form::hidden('flowid',URI::segment(4))}}
+{{ Form::hidden('flowid',URI::segment(5))}}
 {{ Form::hidden('parentid')}}
+{{ Form::hidden('stepid')}}
 {{ Form::control_group(Form::label('step', 'Step / Status'),Form::xlarge_text('step',null,array('placeholder'=>'Type Data Value','required')));}}
 {{ Form::control_group(Form::label('description', 'Description'),Form::xlarge_text('description',null,array('placeholder'=>'Type Data Description')));}}
 {{ Form::control_group(Form::label('roleid', 'Action By'),Form::xlarge_select('roleid', $allrole));}}
@@ -69,7 +70,7 @@
 
   function deleteStep(id){
     console.log(id);
-    $.post('{{ url('admin/modul/deletestep'); }}', "id="+id+"&flowid="+{{ URI::segment(4) }} ,function(data) {
+    $.post('{{ url('admin/modul/deletestep'); }}', "id="+id+"&flowid="+{{ URI::segment(5) }} ,function(data) {
           sourcedata = data;
         }).success(function() {
             $( "#steplist" ).empty().append( sourcedata );
