@@ -103,11 +103,7 @@ class Admin_System_Controller extends Admin_Base_Controller {
         
         $input = Input::get();
 
-        // if($input['roleid'] == NULL):
         $module = new Header;
-        // else:
-        //  $role = Admin_UserRole::find($input['roleid']);
-        // endif;
         $module->navheader  = $input['navheader'];
         $module->save();
 
@@ -120,11 +116,7 @@ class Admin_System_Controller extends Admin_Base_Controller {
         
         $input = Input::get();
 
-        // if($input['roleid'] == NULL):
         $pages = new Link;
-        // else:
-        //  $role = Admin_UserRole::find($input['roleid']);
-        // endif;
         $pages->navheaderid  = $input['navheaderid'];
         $pages->modulpageid  = $input['modulpageid'];
         $pages->save();
@@ -142,11 +134,7 @@ class Admin_System_Controller extends Admin_Base_Controller {
 
         $input = Input::get();
 
-                // if($input['roleid'] == NULL):
         $pages = new Link;
-        // else:
-        //  $role = Admin_UserRole::find($input['roleid']);
-        // endif;
         $pages->navheaderid  = $input['navheaderid'];
         $pages->parentid  = $input['parentid'];
         $pages->modulpageid  = $input['modulpageid'];
@@ -164,10 +152,6 @@ class Admin_System_Controller extends Admin_Base_Controller {
     public function post_deletepages(){
         
         $input = Input::get();
-
-        // $desc = Link::find($input['id'])->modulpage();
-        // echo "<pre>";print_r($desc);die;
-        // $alias = $desc->actionalias;
 
         Link::find($input['id'])->delete();
 
@@ -209,13 +193,6 @@ class Admin_System_Controller extends Admin_Base_Controller {
      **/
 
     public function get_logger(){
-
-    	// $files = Logger::get_logs();
-
-    	// foreach ($files as $key => $content) {
-    	// 	$logs = basename($content,'.log');
-    	// 	$data['files'][$logs] = Logger::get_log($logs);
-    	// }
 
         $logs = Logger::get_log(date('Y-m-d'));
         $data['currentselection'] = date('d-m-Y');
