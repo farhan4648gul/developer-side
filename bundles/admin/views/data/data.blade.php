@@ -62,7 +62,7 @@
 
 		$('#addDataModal').modal('toggle');
 
-		$.get('{{ url('admin/data/datainfo'); }}', { id: id,groupid:{{ URI::segment(4) }}},function(data,status){
+		$.get('{{ url('admin/data/datainfo'); }}', { id: id,groupid:{{ URI::segment(5) }}},function(data,status){
 
 			for (x in data)
 			{ 	
@@ -76,7 +76,7 @@
 
 	function deleteData(id){
 
-	    $.post('{{ url('admin/data/dataremove'); }}', "id="+id+"&groupid="+{{ URI::segment(4) }} ,function(data) {
+	    $.post('{{ url('admin/data/dataremove'); }}', "id="+id+"&groupid="+{{ URI::segment(5) }} ,function(data) {
 			      sourcedata = data;
 			    }).success(function() {
 	            $( "#dataList" ).empty().append( sourcedata );
