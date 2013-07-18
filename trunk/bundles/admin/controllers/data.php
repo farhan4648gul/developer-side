@@ -82,7 +82,7 @@ class Admin_Data_Controller extends Admin_Base_Controller {
 
 	public function get_datacontent(){
 
-		$groupID = URI::segment(4);
+		$groupID = URI::segment(5);
 
 		Group::getDataModel($groupID);
 
