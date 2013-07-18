@@ -10,7 +10,7 @@
 			<div class="span4">
 				<h5>Logs Date : {{ $currentselection }}</h5>
 			</div>
-			<div class="span6 pull-right">
+			<div class="span4 pull-right">
 				{{ Form::search_open();}}
 				{{ Form::search_box('date',null, array('class' => 'input-medium','placeholder'=> date('Y-m-d'))); }}
 				{{ Form::submit('Search Log Data'); }}
