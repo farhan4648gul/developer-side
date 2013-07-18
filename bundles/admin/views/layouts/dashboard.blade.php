@@ -19,7 +19,7 @@
                   <!--Sidebar content-->
                   {{$sidebar}}
                 </div>
-                <div class="span10">
+                <div class="span9">
                   <!--Body content-->
                   @yield('content')
                 </div>
