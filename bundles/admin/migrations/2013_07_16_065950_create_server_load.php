@@ -18,7 +18,6 @@ class Admin_Create_Server_Load {
 		    $table->string('load_one', 100);
 		    $table->string('load_five', 100);
 		    $table->string('load_fifteen', 100);
-		    $table->string('load_fifteen', 100);
 		    $table->string('load_uptime', 100);
 		    $table->string('load_user', 100);
 		    $table->date('load_date');
