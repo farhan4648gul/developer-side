@@ -6,5 +6,6 @@
 </div>
 <div id="dataGroupList" class="rows-fluid show-grid">
 	{{ $claimlist }}
+
 </div>
 @endsection
