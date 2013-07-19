@@ -19,7 +19,7 @@ class Admin_Create_Flow_Steps {
 		    $table->integer('roleid');
 		    $table->integer('parentid');
 		    $table->integer('state');
-		    $table->integer('condition1');
+		    $table->integer('page');
 		    $table->integer('condition2');
 		    $table->timestamps();
 
