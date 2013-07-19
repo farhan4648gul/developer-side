@@ -21,20 +21,8 @@
 </div>
 <div class="modal-body">
   {{ Form::open('claims/request/request', 'POST', array('id' => 'addNewForm', 'class' => 'form-horizontal')) }}
-    <div class="control-group">
-        {{ Form::label('claimscat', 'Claims Category', array('class' => 'control-label')) }}
-      <div class="controls">
-        {{ Form::xlarge_select('claimscat', $claimsCat , '0',array('required')); }}
-      </div>
-    </div>
-    <div class="control-group">
-      {{ Form::label('month', 'Month Apply For', array('class' => 'control-label')) }}
-      <div class="controls">
-        {{ Form::span5_text('applydate', '', array('placeholder'=>'16/4/2013', 'required', 'id' => 'applydate'));}}
-        {{ Form::span5_text('applymonth', '', array('placeholder'=>'January 2013', 'required','id' => 'applymonth' ));}}
-      </div>
-    </div>
-  <!-- </form> -->
+  {{ Form::control_group(Form::label('claimscat', 'Claims Category'),Form::large_select('claimscat', $claimsCat , '0',array('required'))); }}
+  {{ Form::control_group(Form::label('applymonth', 'Month Apply For'),Form::large_text('applymonth', '', array('placeholder'=>'16/4/2013', 'required', 'id' => 'applydate', 'data-tabindex'=>'1'))); }}
   {{ Form::close()}}
 </div>
 <div class="modal-footer">
@@ -46,30 +34,27 @@
 @section('scripts')
 <script>
 $(function() {
-  $( "#applydate" ).datepicker({
-      showWeek: true,
-      firstDay: 1,
-      altField: "#applymonth",
-      altFormat: "MM, yy",
-      showButtonPanel: true
+  $( "#applydate").datepicker({
+      format: "MM yyyy",
+      minViewMode: 1,
+      autoclose: true
     });
   });
 
-    $('#addNewBtn').click(function() {
-      
-      $.post('{{ url('claims/request/request'); }}', $("#addNewForm").serialize(),function(data) {
-              sourcedata = data;
-            }).success(function() { 
-              sourcedata = eval("("+sourcedata+")");
-              // $("#claimsList" ).empty().html( sourcedata.list );
-              $("#addNewForm :input").val('');
-              $('#addNewModal').modal('hide');
-              $('#actionStatModal').modal('toggle');
-              $('#actionStat').removeClass().addClass('alert alert-success').text('Your Application Has been Registered. Proceed for details submission');
+  $('#addNewBtn').click(function() {
+    
+    $.post('{{ url('claims/request/request'); }}', $("#addNewForm").serialize(),function(data) {
+            sourcedata = data;
+          }).success(function() { 
+            sourcedata = eval("("+sourcedata+")");
+            // $("#claimsList" ).empty().html( sourcedata.list );
+            $("#addNewForm :input").val('');
+            $('#addNewModal').modal('hide');
+            $('body').modalmanager('loading');
+            bootbox.dialog("<p class='alert alert-success'>Your Application Has been Registered. Proceed for details submission</p>");
+            setTimeout('window.location.href="{{ url("'+sourcedata.url+'"); }}";',3000);
+          });
 
-              setTimeout('window.location.href="{{ url("'+sourcedata.url+'"); }}";',3000);
-            });
-
-    });
+  });
 </script>
 @endsection
