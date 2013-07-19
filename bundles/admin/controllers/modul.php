@@ -142,7 +142,7 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
         $data['flow'] =  Str::title(Flow::find(URI::segment(5))->flowname);
         $data['steplist'] = Menu::flowtree(URI::segment(5));
         $data['allrole'] = Role::arrayRoles();
-        //$allstep = Step::steploop(URI::segment(4));
+        $data['pagelist'] = $listpage = Page::listSteppages();
 
         return View::make('admin::modul.step',$data);
 
@@ -164,12 +164,25 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
         $step->flowid  = $input['flowid'];
         $step->parentid  = $input['parentid'];
         $step->roleid  = $input['roleid'];
+        $step->page  = $input['page'];
         $step->timestamp();
         $step->save();
 
         Log::write('Modul', $logs.$input['step'].' by '.Auth::user()->username);
 
         return Menu::flowtree($input['flowid']);
+
+    }
+
+    public function get_resetnavdata(){
+
+        $input = Input::get();
+
+        $id = (isset($input['stepid']))?$input['stepid']:NULL;
+
+        $data['page'] = $listpage = Page::listSteppages($id);
+
+        return json_encode($data);
 
     }
 
