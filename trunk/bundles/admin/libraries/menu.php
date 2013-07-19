@@ -256,7 +256,7 @@ class Menu extends Crapcrush{
         $structure .= '<a href="#" onclick="deleteStep('.$key.')" style="float:right">&nbsp;<i class="icon-remove-sign"></i></a>';
         $structure .= '<a href="#" onclick="editStep('.$key.')" style="float:right">&nbsp;<i class="icon-edit"></i></a>';
         $structure .= '<a href="#" onclick="addStep('.$key.')" ><i class="icon-bookmark"></i>&nbsp;'.Str::title($value['desc']).'&nbsp;<i class="icon-plus-sign"></i></a>';
-        $structure .= self::looper($value['child']);
+        $structure .= self::looper($value['child']); 
         $structure .= '</li>';
       }
       $structure .=  '</ul>';
