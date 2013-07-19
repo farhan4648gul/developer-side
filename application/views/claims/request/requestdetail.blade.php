@@ -51,7 +51,7 @@
 
 
 <!-- Modal -->
-<div id="addDetailModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="addDetailModal" class="modal hide fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
   <h3 id="myModalLabel">Add New Detail</h3>
@@ -163,7 +163,7 @@
             }).success(function() { 
               $("#dataList" ).empty().html( sourcedata );
               $("#addDetailForm :input").val('');
-              $("#addDetailForm :input[name='claimid']").val({{URI::segment(4)}});
+              $("#addDetailForm :input[name='claimid']").val({{URI::segment(5)}});
               $('#addDetailModal').modal('hide');
             });
 
@@ -171,15 +171,17 @@
 
     $('#submitClaims').click(function() {
       
-      $.post('{{ url('claims/request/submitClaims'); }}', "&claimid="+{{ URI::segment(4) }},function(data) {
+      $.post('{{ url('claims/request/requestDetail'); }}', "&claimid="+{{ URI::segment(5) }},function(data) {
               url = data;
             }).success(function() { 
-              $('#actionStatModal').modal('toggle');
-              $('#actionStat').removeClass().addClass('alert alert-success').text('Success!!!');
-
+              
+              $('body').modalmanager('loading');
+              bootbox.dialog("<p class='alert alert-success'>Your Claims has been submitted for approval</p>");
               setTimeout('window.location.href="{{ url("'+url+'"); }}";',2000);
 
             });
+
+            
 
     });
 
@@ -208,7 +210,7 @@
 
   function deleteDetail(id){
 
-      $.post('{{ url('claims/request/deleteDetail'); }}', "id="+id+"&claimid="+{{ URI::segment(4) }} ,function(data) {
+      $.post('{{ url('claims/request/deleteDetail'); }}', "id="+id+"&claimid="+{{ URI::segment(5) }} ,function(data) {
             sourcedata = data;
           }).success(function() {
               $( "#dataList" ).empty().append( sourcedata );
@@ -226,13 +228,12 @@
       for (x in data)
       {   
         if(x == 1){
-          $('#recCoru .carousel-inner').append('<div class="active item"><img src="{{ url("'+ data[x ]+'")}}" width="200px" height="200px"></div>');
+          $('#recCoru .carousel-inner').append('<div class="active item"><img src="{{ url("'+ data[x ]+'")}}" width="150" height="150"></div>');
         }else{
-          $('#recCoru .carousel-inner').append('<div class="item"><img src="{{ url("'+ data[x ]+'")}}" width="200px" height="200px"></div>');
+          $('#recCoru .carousel-inner').append('<div class="item"><img src="{{ url("'+ data[x ]+'")}}" width="150" height="150"></div>');
         }
         
       }
-
     },"json");
 
   }
