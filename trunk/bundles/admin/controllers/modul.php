@@ -165,6 +165,7 @@ class Admin_Modul_Controller extends Admin_Base_Controller {
         $step->parentid  = $input['parentid'];
         $step->roleid  = $input['roleid'];
         $step->page  = $input['page'];
+        $step->state  = $input['state'];
         $step->timestamp();
         $step->save();
 
