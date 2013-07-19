@@ -8,7 +8,7 @@ class Claims_Request_Controller extends Base_Controller {
 
 	public function get_index()
 	{
-		$data['claimlist'] = Claims_App::listClaims();
+		$data['claimlist'] = Claims_App::listIndClaims();
 
 		return View::make('claims.request.index',$data);
 	}
@@ -18,9 +18,8 @@ class Claims_Request_Controller extends Base_Controller {
 	*/
 	public function get_request()
 	{
-
 		$data['claimsCat'] = Cat::arrayCats();
-        $data['claimlist'] = Claims_App::listClaims();
+        $data['claimlist'] = Claims_App::listIndClaims();
 
 		return View::make('claims.request.request',$data);
 	}
@@ -31,22 +30,46 @@ class Claims_Request_Controller extends Base_Controller {
 
 		$claimID = Claims_App::applyclaims($input);
 
-        // $data['list'] = Claims_App::listClaims();
         $data['url'] = 'claims/request/requestDetail/'.$claimID;
 
         return json_encode($data);
 	}
 
-	public function get_requestDetail()
+    public function get_requestDetail()
+    {
+
+        $data['claimID'] = $claimID = URI::segment(5);
+
+        $data['app'] = $claimApp = Claims_App::appInfo($claimID);
+
+        $data['detailList'] = Claims_App::listDetails($claimID);
+
+
+        return View::make('claims.request.requestdetail',$data);
+    }
+
+    public function post_requestDetail(){
+
+        $input = Input::get();
+        
+        Claims_App::updateApplication($input['claimid']);/* code to update application status*/
+        
+
+        $url = 'claims/request/request';
+
+        return $url;
+    }
+
+	public function get_requestDetailinfo()
 	{
 
-		$data['claimID'] = $claimID = URI::segment(4);
+		$data['claimID'] = $claimID = URI::segment(5);
 
 		$data['app'] = $claimApp = Claims_App::appInfo($claimID);
-		$data['detailList'] = Claims_App::listDetails($claimID);
+		$data['detailList'] = Claims_App::listDetailsHistory($claimID);
 
 
-		return View::make('claims.request.requestdetail',$data);
+		return View::make('claims.request.inforequestdetails',$data);
 	}
 
 	public function post_addDetail(){
@@ -153,17 +176,6 @@ class Claims_Request_Controller extends Base_Controller {
         return json_encode($data);
     }
 
-    public function post_submitClaims(){
-
-        $input = Input::get();
-
-        /* code to update application status*/
-
-        $url = 'claims/request/index';
-
-        return $url;
-    }
-
 
 	public function get_approval()
 	{
@@ -172,7 +184,7 @@ class Claims_Request_Controller extends Base_Controller {
 
 	public function get_history()
 	{
-		$data['claimlist'] = Claims_App::listClaims();
+		$data['claimlist'] = Claims_App::listIndClaimsHistory();
 
 		return View::make('claims.request.history',$data);
 	}
