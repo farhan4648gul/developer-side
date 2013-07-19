@@ -43,6 +43,27 @@ class Page extends Eloquent {
         return $arrayPages;
     }
 
+    public static function listSteppages($current = NULL){
+        
+        $pagelist = Page::all();
+
+        $arrayPages['data'] = array('Sila Pilih');
+
+        foreach ($pagelist as $value) {
+
+            $regnav = Step::where('page','=',$value->modulpageid)->first() ;
+
+            if(isset($value->action) && $value->actionalias != '' && $value->visible == 1 && (empty($regnav) OR ((!empty($regnav) && $current != NULL)? $regnav->stepid == $current:empty($regnav)))){
+                $arrayPages['data'][$value->modulpageid] = $value->actionalias;
+                if(!empty($regnav) && $regnav->stepid == $current) $arrayPages['selected'] = $regnav->page;
+            }
+
+
+        }
+
+        return $arrayPages;
+    }
+
 
     public static function getRegPages(){
         
