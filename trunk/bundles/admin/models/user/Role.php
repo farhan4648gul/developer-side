@@ -2,7 +2,7 @@
 use \Laravel\Database\Eloquent\Model as Eloquent,
 	Laravel\Validator as Validator,
 	Laravel\Auth as Auth,
-	Datagrid as Datagrid;
+	Datagrid as Datagrid,Laravel\Str,Laravel\Lang,Laravel\Config;
 	
 class Role extends Eloquent {
 
@@ -17,12 +17,12 @@ class Role extends Eloquent {
 
 	public static function listRole(){
 
-		$rolelist = Role::paginate(10);
+		$rolelist = Role::paginate(Config::get('system.pagination'));
 
 		$datagrid = new Datagrid;
-		$datagrid->setFields(array('role'=>'Role','roledesc'=>'Role Description'));
-		$datagrid->setAction('edit','editRoleModal',true,array('roleid'));//false,array('id'=>'roleid','data-toggle'=>'modal'));
-		$datagrid->setAction('delete','deleteRole',true,array('roleid'));
+		$datagrid->setFields(array('role'=>Str::upper(Lang::line('admin.rolename')->get()),'roledesc'=>Str::upper(Lang::line('admin.roledesc')->get())));
+		$datagrid->setAction(Lang::line('global.edit')->get(),'editRoleModal',true,array('roleid'));//false,array('id'=>'roleid','data-toggle'=>'modal'));
+		$datagrid->setAction(Lang::line('global.delete')->get(),'deleteRole',true,array('roleid'));
 		$datagrid->setContainer('list01','span12');
 		$datagrid->setTable('users','table table-bordered table-hover table-striped table-condensed');
 		$datagrid->build($rolelist,'roleid');
