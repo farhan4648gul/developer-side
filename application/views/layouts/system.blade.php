@@ -39,6 +39,7 @@
       </div>
     </div>
     {{ Asset::container('bootstrapper')->scripts() }}
+    @include('admin::plugin.loggedin')
     <script>
 
     startTime();
