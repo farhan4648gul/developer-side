@@ -12,8 +12,7 @@
 			</div>
 			<div class="span4 pull-right">
 				{{ Form::search_open();}}
-				{{ Form::search_box('date',null, array('class' => 'input-medium','placeholder'=> date('Y-m-d'))); }}
-				{{ Form::submit('Search Log Data'); }}
+				{{ Form::append_buttons(Form::span4_text('date',null, array('id'=>'date','class' => 'input-medium','placeholder'=> date('Y-m-d'))), array(Form::submit('Search Log Data'))) }}
 				{{ Form::close(); }}
 			</div>
 		</div>
@@ -27,4 +26,14 @@
 	</div>
 </div>
 
+@endsection
+@section('scripts')
+<script>
+$(function() {
+  $( "#date").datepicker({
+      format: "MM yyyy",
+      minViewMode: 1,
+      autoclose: true
+    });
+  });
 @endsection
