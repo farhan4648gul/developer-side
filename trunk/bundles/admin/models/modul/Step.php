@@ -1,7 +1,7 @@
 <?php namespace Admin\Models\Modul;
 use \Laravel\Database\Eloquent\Model as Eloquent, 
 	Datagrid,
-	Admin\Models\Modul\Flow as Flow;
+	Admin\Models\Modul\Flow as Flow,Laravel\Config;
 
 class Step extends Eloquent {
 
@@ -14,7 +14,7 @@ class Step extends Eloquent {
 
         $flowSteps = Step::left_join('users_roles AS r', 'flows_steps.roleid', '=', 'r.roleid')
         			->where('flowid','=',$flowid)
-        			->paginate(10,array('r.role', 'flows_steps.*'));
+        			->paginate(Config::get('system.pagination'),array('r.role', 'flows_steps.*'));
 
         $datagrid = new Datagrid;
         $datagrid->setFields(array('step' =>'Step'));
