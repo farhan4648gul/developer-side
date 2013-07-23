@@ -42,11 +42,11 @@ class Console_Auth_Controller extends Base_Controller {
             'password' => 'required'
         );
         
-        // $validation = Validator::make($input, $rules);
+        $validation = Validator::make($input, $rules);
         
-        // if( $validation->fails() ) {
-        //     return Redirect::to('home')->with_errors($validation);
-        // }
+        if( $validation->fails() ) {
+            Redirect::to('confirmation/'.$input['key'])->with_errors($validation);
+        }
 
         $existedUser = Console_User::where('validationkey', '=', $input['key'])
         ->where('username', '=' ,$input['oldpassword'])
@@ -57,14 +57,15 @@ class Console_Auth_Controller extends Base_Controller {
         }else{
             return Redirect::to(URL::base());
         }
-
+        echo $existedUser->userid;
+        
        if($result){
 
-            $emel = Console_Profile::find($existedUser->userid)->emel;
+            $profile = Console_Profile::where('userid','=',$existedUser->userid)->first(array('emel'));
             
             try{
 
-                $mailer = Message::to($emel);
+                $mailer = Message::to($profile->emel);
                 $mailer->from('admin@3fresorces.com', 'System Generate');
                 $mailer->subject('User Registration Information');
                 $mailer->body('view: plugins.emailAcc');
