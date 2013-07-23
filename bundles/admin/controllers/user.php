@@ -26,6 +26,18 @@ class Admin_User_Controller extends Admin_Base_Controller {
 
     }
 
+    public function post_search(){
+
+        $input = Input::all();
+
+        if(Input::has('searchval')){
+            return json_encode(User::userSearchList($input));
+        }else{
+            return json_encode(User::listUser());
+        }
+ 
+    }
+
     public function get_list(){
 
         $data['userlist'] = User::listUser();
@@ -49,14 +61,14 @@ class Admin_User_Controller extends Admin_Base_Controller {
 
         $input['key'] = $key = Str::random(32, 'alpha');
 
-        // $validation = User::validate($input);
-        // $validateProfile = UserProfile::validate($input);
+        $validation = User::validate($input);
+        $validateProfile = Profile::validate($input);
 
-        // if( $validation->fails()) {
-        //     return Redirect::to('auth/register')->with_errors($validation)->with_input();
-        // }elseif($validateProfile->fails()){
-        //     return Redirect::to('auth/register')->with_errors($validateProfile)->with_input();
-        // }
+        if( $validateProfile->fails()) {
+            return json_encode($validateProfile->errors);
+        }elseif($validation->fails()){
+            return json_encode($validation->errors);
+        }
 
        $resgisteredUser = User::registerUser($input);
 
@@ -81,10 +93,69 @@ class Admin_User_Controller extends Admin_Base_Controller {
                 Log::write('email', 'Mailer error: ' . $e->getMessage());
             }
 
-           return User::listUser();
+           return json_encode(User::listUser());
        }
 
     }
+
+    /**
+     * Retrieve User Information function
+     * Component : userinfo
+     * Method : ajax post
+     * @author joharijumali@gmail.com
+     **/
+
+    public function get_userinfo()
+    {
+        $input = Input::all();
+        $profile = User::userinfo($input['id']);
+        return json_encode($profile);
+
+    }
+
+
+    /**
+     * Update User Information function
+     * Component : userinfo
+     * Method : ajax post
+     * @author joharijumali@gmail.com
+     **/
+
+    public function post_updateUser(){
+
+        $input = Input::all();
+
+        $rules = array(
+                'icno'  => 'required',
+                'emel' => 'required|email',
+        );
+
+        $validation = Validator::make($input, $rules);
+
+        if( $validation->fails()) {
+            return json_encode($validation->errors);
+        }
+
+        User::updateUser($input);
+
+        return json_encode(User::listUser());
+    }
+
+    public function post_deleteAccount(){
+
+        $id = Input::get('id');
+
+        $existed = User::find($id);
+
+        if($existed->status === 'Pending'){
+            $existed->delete();
+            return json_encode(User::listUser());
+        }else{
+            return json_encode(array('fail'=>'Pengguna ini sedang diguna oleh sistem'));
+        }
+
+    }
+
 
     /**
      * User Reset login function
@@ -98,16 +169,17 @@ class Admin_User_Controller extends Admin_Base_Controller {
 
         $validatekey = Str::random(32, 'alpha');
 
+        $input = Input::all();
         $uname = Str::random(16, 'alpha');
 
-        $user = User::find(Auth::user()->userid);
+        $user = User::find($input['id']);
         $user->username = $uname;
         $user->password = $uname;
         $user->status = 3;
         $user->validationkey = $validatekey;
         $user->save();
 
-        Log::write('User', 'Reset Login User ' . $user->userprofile->icno);
+        Log::write('User', 'Reset Login User ' . $user->userprofile->icno. 'By '.Auth::user()->username);
 
         try{
 
@@ -117,7 +189,7 @@ class Admin_User_Controller extends Admin_Base_Controller {
             $mailer->body('view: admin::plugin.emailAccReset');
             $mailer->body->username = $uname;
             $mailer->body->password = $uname;
-            $mailer->body->key = $key ;
+            $mailer->body->key = $validatekey ;
             $mailer->html(true);
             $mailer->send();
 
@@ -125,6 +197,8 @@ class Admin_User_Controller extends Admin_Base_Controller {
             Log::write('email', 'Message was to '.$user->userprofile->emel.' not sent.');
             Log::write('email', 'Mailer error: ' . $e->getMessage());
         }
+
+        return User::listUser();
 
     }
 
