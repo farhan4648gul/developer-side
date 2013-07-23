@@ -152,8 +152,8 @@ class Setup_Task {
 
 	public static function createAdmin($username,$password){
 
-		echo "Publishing Admin Bundle...".PHP_EOL;
-        Command::run(array('bundle:publish', 'admin'));
+		echo "Publishing Bundle...".PHP_EOL;
+        Command::run(array('bundle:publish'));
         echo "Registering administrator...".PHP_EOL;
         Command::run(array('admin::setup', $username , $password));
 
