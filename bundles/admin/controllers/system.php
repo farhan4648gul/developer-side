@@ -214,5 +214,74 @@ class Admin_System_Controller extends Admin_Base_Controller {
         return View::make('admin::system.logs',$data);
     }
 
+    /**
+     * System Configuration function
+     * Component : navigate
+     * Method : ajax post
+     * @return void
+     * @author joharijumali@gmail.com
+     **/
+
+    public function get_sysConfig(){
+
+        $data = array();
+
+        $data['pagination'] = Config::get('system.pagination');
+        $data['emailnotices'] = Config::get('system.emailnotices');
+        $data['loginexpired'] = Config::get('session.lifetime');
+
+        foreach ($data as $key => $value) {
+            if($value != null){
+                $data[$key.'_cond'] = 'success';
+            }else{
+                $data[$key.'_cond'] = 'warning';
+            }
+        }
+
+        return View::make('admin::system.config',$data);
+    }
+
+    public function post_sysConfig(){
+
+        $input = Input::get();
+
+        $emailnotices = ($input['emailnotices'] == 0)? 'false':'true';
+        $confignotices = (Config::get('system.emailnotices') == 0)? 'false':'true';
+
+        $pagination = (!isset($input['pagination']))? 20 : $input['pagination'];
+        $loginexpired = (!isset($input['loginexpired']))? 15 : $input['loginexpired'];
+
+        $syspath = path('app').'config/system'.EXT;
+
+        $currentconfig = File::get($syspath);
+
+        $config = str_replace("'pagination' => ".Config::get('system.pagination').",", "'pagination' => {$pagination},", $currentconfig, $count);
+        $config = str_replace("'emailnotices' => {$confignotices},", "'emailnotices' => {$emailnotices},", $config, $count);
+
+        File::put($syspath, $config);
+
+        $sespath = path('app').'config/session'.EXT;
+
+        $sesconfig = File::get($sespath);
+
+        $sesconfig = str_replace("'lifetime' => ".Config::get('session.lifetime').",", "'lifetime' => {$loginexpired},", $sesconfig, $count);
+
+        File::put($sespath, $sesconfig);
+
+        $data['pagination'] = $input['pagination'];
+        $data['emailnotices'] = $input['emailnotices'];
+        $data['loginexpired'] = $input['loginexpired'];
+
+        foreach ($data as $key => $value) {
+            if($value != 0){
+                $data[$key.'_cond'] = 'success';
+            }else{
+                $data[$key.'_cond'] = 'warning';
+            }
+        }
+
+        return View::make('admin::system.config',$data);
+
+    }
 
 }
