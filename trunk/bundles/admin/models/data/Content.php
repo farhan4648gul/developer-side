@@ -2,8 +2,7 @@
 use \Laravel\Database\Eloquent\Model as Eloquent,
 	Datagrid, Laravel\Config as Config,
     Laravel\Database as DB,
-    Laravel\Log as Log,
-    Laravel\Auth as Auth;
+    Laravel\Log,Laravel\Auth,Laravel\Str,Laravel\Lang;
 
 /**
  * Data Content Model Class
@@ -27,7 +26,7 @@ class Content extends Eloquent {
 	 **/
     public static function genListData(){
 
-        $allContent = Content::paginate(10);
+        $allContent = Content::paginate(Config::get('system.pagination'));
 
         $datagrid = new Datagrid;
 
@@ -37,9 +36,9 @@ class Content extends Eloquent {
             if($value->field != 'created_at' && $value->field != 'updated_at' && $value->field != Content::$key){
 
 	            if(stristr($value->field , 'name')){
-	                $title = 'Data';
+	                $title = Str::upper(Lang::line('global.data')->get());
 	            }elseif(stristr($value->field , 'desc')){
-	        		$title = 'Description';
+	        		$title = Str::upper(Lang::line('global.desc')->get());
 	            }else{
 	            	$title = $value->field;
 	            }
@@ -48,8 +47,8 @@ class Content extends Eloquent {
             }
         }
 
-        $datagrid->setAction('edit','editData',true,array(Content::$key));
-        $datagrid->setAction('delete','deleteData',true,array(Content::$key));
+        $datagrid->setAction(Lang::line('global.edit')->get(),'editData',true,array(Content::$key));
+        $datagrid->setAction(Lang::line('global.delete')->get(),'deleteData',true,array(Content::$key));
         $datagrid->setTable('contentGroup','table table-bordered table-hover table-striped table-condensed');
         $datagrid->build($allContent,Content::$key);
 
@@ -117,11 +116,11 @@ class Content extends Eloquent {
     }
 
     /**
-	 * Removing Data Information
-	 *
-	 * @return void
-	 * @author 
-	 **/
+     * Removing Data Information
+     *
+     * @return void
+     * @author 
+     **/
     public static function remData($id){
 
         Content::find($id)->delete();
@@ -129,5 +128,6 @@ class Content extends Eloquent {
         Log::write('Data', 'Data Id <b>'.$id.'</b> Remove by '.Auth::user()->username);
 
     }
+
 
 }
