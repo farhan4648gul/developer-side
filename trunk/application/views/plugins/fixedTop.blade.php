@@ -5,7 +5,10 @@
           	<div class="nav-collapse collapse">
               	<div class="pull-right">
 	                <ul class="nav pull-right">
-	                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">&nbsp;{{ Str::title(Auth::user()->userprofile->fullname) }} <b class="caret"></b></a>
+	                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">&nbsp;
+	                    	@if(Auth::check())
+	                    	{{ Str::title(Auth::user()->userprofile->fullname) }} 
+	                    	@endif<b class="caret"></b></a>
 	                        <ul class="dropdown-menu">
 	                            <li><a href="#profileModal" onclick="profileInfo('{{url('console/user/profile')}}')"><i class="icon-user"></i> Profile</a></li>
 	                            <li><a href="#resetpasswordModal" data-toggle="modal"><i class="icon-lock"></i> Update Login</a></li>
