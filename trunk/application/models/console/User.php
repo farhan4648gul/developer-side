@@ -33,7 +33,7 @@ class Console_User extends Eloquent
             $user = Console_User::find($id);
             $user->username  = $input['username'];
             $user->password  = Hash::make($input['password']) ;
-            $user->status = 2;
+            $user->status = 1;
             $user->save();
 
             return true;
