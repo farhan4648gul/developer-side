@@ -6,7 +6,7 @@
 </div>
 <div class="row-fluid">
   <div class="pull-right">
-    <a href="#addDataModal" role="button" class="btn" data-toggle="modal" style='margin-bottom:10px'><i class="icon-plus"></i>&nbsp;Add New Data</a>
+    <a href="#addDataModal" role="button" class="btn" data-toggle="modal" style='margin-bottom:10px'><i class="icon-plus"></i>&nbsp;{{ Str::title(Lang::line('admin.adddata')->get()) }}</a>
   </div>
 </div>
 <div id="dataList" class="rows-fluid show-grid">
@@ -15,29 +15,29 @@
 <div id="addDataModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-  <h3 id="myModalLabel">Add New Data</h3>
+  <h3 id="myModalLabel">{{ Str::title(Lang::line('admin.adddata')->get()) }}</h3>
 </div>
 <div class="modal-body">
 {{ Form::open('admin/user/role', 'POST', array('id' => 'addDataForm', 'class' => 'form-horizontal')) }}
   <div class="control-group">
-    <label class="control-label" for="navheaderid">Data</label>
+    <label class="control-label" for="navheaderid">{{ Str::title(Lang::line('admin.dataname')->get()) }}</label>
     <div class="controls">
     	{{ Form::hidden('groupid',$groupID)}}
     	{{ Form::hidden('id')}}
-      	{{ Form::xlarge_text('data',null,array('placeholder'=>'Type Data Value','required')) }}
+      	{{ Form::xlarge_text('data',null,array('placeholder'=>Str::title(Lang::line('global.type')->get().' '.Lang::line('admin.dataname')->get()),'required')) }}
     </div>
   </div>
   <div class="control-group">
-    <label class="control-label" for="navheaderid">Description</label>
+    <label class="control-label" for="navheaderid">{{ Str::title(Lang::line('admin.datadesc')->get()) }}</label>
     <div class="controls">
-     	{{ Form::xlarge_text('description',null,array('placeholder'=>'Type Data Description')) }}
+     	{{ Form::xlarge_text('description',null,array('placeholder'=>Str::title(Lang::line('global.type')->get().' '.Lang::line('admin.datadesc')->get()))) }}
     </div>
   </div>
 {{ Form::close()}}
 </div>
 <div class="modal-footer">
-  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-  <button id="addDataBtn" class="btn btn-primary">Save</button>
+  <button class="btn" data-dismiss="modal" aria-hidden="true">{{ Str::title(Lang::line('global.close')->get()) }}</button>
+  <button id="addDataBtn" class="btn btn-primary">{{ Str::title(Lang::line('global.save')->get()) }}</button>
 </div>
 </div>
 @endsection
