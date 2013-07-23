@@ -251,7 +251,21 @@ class Datagrid
         if(isset($attr['ajax'])){
             $i = 1;
             foreach ($attr['param'] as $value) {
-                $params .= "'".$data->$value."'";
+
+                if(strrpos($value, "/")){
+                    
+                    $foo = explode("/", $value);
+                     $countfoo = count($foo);
+
+                     $params .= ($countfoo == 2)?"'".$data->$foo[0]->$foo[1]."'":'';
+                     $params .= ($countfoo == 3)?"'".$data->$foo[0]->$foo[1]->$foo[2]."'":'';
+                     $params .= ($countfoo == 4)?"'".$data->$foo[0]->$foo[1]->$foo[2]->$foo[3]."'":'';
+
+                }else{
+                    $params .= "'".$data->$value."'";
+                }
+                
+                
                 $params .= ($i < count($attr['param']))?',':'';
                 $i++; 
             }
