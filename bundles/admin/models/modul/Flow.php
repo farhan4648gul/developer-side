@@ -1,6 +1,6 @@
 <?php namespace Admin\Models\Modul;
 use \Laravel\Database\Eloquent\Model as Eloquent,
-	Datagrid;
+	Datagrid,Laravel\Config;
 
 class Flow extends Eloquent {
 
@@ -16,7 +16,7 @@ class Flow extends Eloquent {
 
     public static function listFlow(){
 
-        $allFlow = Flow::paginate(10);
+        $allFlow = Flow::paginate(Config::get('system.pagination'));
 
         $datagrid = new Datagrid;
         $datagrid->setFields(array('flowname' =>'Flow'));
