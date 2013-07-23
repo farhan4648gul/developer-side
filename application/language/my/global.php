@@ -14,6 +14,27 @@ return array(
 	*/
 
 	'logout' => 'Keluar',
-
+	'manage' => 'Konfigurasi',
+	'edit' => 'Kemaskini',
+	'delete' => 'Hapus',
+	'view' => 'Papar',
+	'reset' => 'reset',
+	'type' => 'Taip',
+	'close' => 'Tutup',
+	'save' => 'Simpan',
+	'data' => 'Data',
+	'desc' => 'Keterangan',
+	'username' => 'ID Pengguna',
+	'password' => 'Katalaluan',
+	'register' => 'Daftar',
+	'logininfo' => 'Maklumat Daftar Masuk',
+	'userinfo' => 'Maklumat Pengguna',
+	//config
+	'pagination' => 'Bilangan Barisan Rekod Untuk Paparan Skrin',
+	'emailnotices' => 'Notifikasi Emel Bagi Setiap Langkah',
+	'loginexpired' => 'Tempoh Tamat Sesi Dalam Minit',
+	'sessionexpired' => 'Tempoh Sesi Tamat',
+	'yes' => 'Ya',
+	'no' => 'Tidak',
 
 );
