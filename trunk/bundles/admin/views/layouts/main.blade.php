@@ -16,7 +16,7 @@
             width:      100%;
             opacity: 0.8;
             background: #000000 
-                        url("{{ url('bundles/admin/img/loader.gif'); }}")
+                        url("{{ url('../bundles/admin/img/loader.gif'); }}")
                         50% 50% 
                         no-repeat;
         }
@@ -86,9 +86,10 @@
 <!-- <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script> -->
     <!-- {{ HTML::script('js/jquery.js') }}  -->
 
+
     {{ Asset::container('bootstrapper')->scripts() }}
-    @section('scripts')
     @include('admin::plugin.loggedin')
+    @section('scripts')
     <script type="text/javascript">
       $(document).ajaxStart(function() {
         $('<div class="loaders" />').appendTo(document.body);
@@ -100,6 +101,14 @@
         $('div.loaders').removeClass("loading"); 
       });
 
+      
+      function validated(form,data){
+
+        for(x in data){
+          $(".modal-body #"+form+" :input[name='"+x+"']").focus().addClass('error').attr('placeholder',data[x][0]).val('');
+        }
+
+      }
     </script>
     @yield('scripts')
   </body>
